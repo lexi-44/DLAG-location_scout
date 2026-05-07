@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>丽江取景地勘察报告汇总 / Lijiang Location Scout Report</title>
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: -apple-system, "PingFang SC", "Microsoft YaHei", sans-serif; background: #f5f5f5; color: #333; line-height: 1.6; padding: 20px; }
+.container { max-width: 1200px; margin: 0 auto; }
+.header { background: linear-gradient(135deg, #1a1a2e, #16213e); color: white; padding: 30px; border-radius: 12px; margin-bottom: 24px; text-align: center; }
+.header h1 { font-size: 28px; margin-bottom: 10px; }
+.header p { opacity: 0.8; font-size: 14px; }
+.toc { background: white; padding: 24px; border-radius: 12px; margin-bottom: 24px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); }
+.toc h2 { font-size: 18px; margin-bottom: 16px; color: #1a1a2e; border-bottom: 2px solid #1a1a2e; padding-bottom: 8px; }
+.toc-section { margin-bottom: 16px; }
+.toc-section h3 { font-size: 15px; color: #666; margin-bottom: 8px; }
+.toc-list { display: flex; flex-wrap: wrap; gap: 8px; }
+.toc-item { background: #f0f0f0; padding: 6px 12px; border-radius: 20px; font-size: 13px; text-decoration: none; color: #333; transition: all 0.2s; }
+.toc-item:hover { background: #1a1a2e; color: white; }
+.toc-item.star { background: #fff3e0; border: 1px solid #ff9800; }
+.toc-item.star:hover { background: #ff9800; color: white; }
+.location { background: white; border-radius: 12px; margin-bottom: 24px; box-shadow: 0 2px 8px rgba(0,0,0,0.08); overflow: hidden; }
+.location-header { background: #f8f9fa; padding: 16px 20px; border-bottom: 1px solid #eee; display: flex; justify-content: space-between; align-items: center; }
+.location-title { font-size: 18px; font-weight: 600; color: #1a1a2e; }
+.location-title-en { font-size: 13px; font-weight: 400; color: #666; display: block; margin-top: 2px; }
+.location-meta { display: flex; gap: 12px; align-items: center; flex-wrap: wrap; }
+.badge { background: #e3f2fd; color: #1565c0; padding: 4px 10px; border-radius: 12px; font-size: 12px; }
+.badge.star { background: #fff3e0; color: #e65100; }
+.badge.alert { background: #ffebee; color: #c62828; }
+.location-body { padding: 20px; }
+.location-info { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 12px; margin-bottom: 16px; }
+.info-item { background: #f8f9fa; padding: 10px 14px; border-radius: 8px; }
+.info-item label { font-size: 12px; color: #666; display: block; }
+.info-item span { font-size: 14px; font-weight: 500; }
+.images { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 12px; margin-top: 16px; }
+.images img { width: 100%; height: 200px; object-fit: cover; border-radius: 8px; cursor: pointer; transition: transform 0.2s; }
+.images img:hover { transform: scale(1.03); }
+.notes { background: #fff8e1; padding: 14px; border-radius: 8px; margin-top: 16px; font-size: 14px; }
+.notes strong { color: #f57c00; }
+.back-top { position: fixed; bottom: 30px; right: 30px; background: #1a1a2e; color: white; width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; text-decoration: none; font-size: 20px; box-shadow: 0 4px 12px rgba(0,0,0,0.2); }
+.back-top:hover { background: #16213e; }
+.section-title { font-size: 22px; margin: 30px 0 20px; color: #1a1a2e; padding-left: 12px; border-left: 4px solid #1a1a2e; }
+.section-title-en { font-size: 14px; font-weight: 400; color: #666; }
+</style>
+</head>
+<body>
+<div class="container">
+<div class="header">
+<h1>📍 丽江取景地勘察报告 / Lijiang Location Scout Report</h1>
+<p>项目 Project：Les Petites Lumières (小光点) | 发件人 From：Natacha Devillers | 日期 Date：2026年5月5日 / May 5, 2026</p>
+</div>
+
+<div class="toc">
+<h2>📑 目录导航 / Table of Contents</h2>
+
+<div class="toc-section">
+<h3>🏠 英子家取景地 / Yingzi's Home Locations (6)</h3>
+<div class="toc-list">
+<a href="#yingzi-1" class="toc-item">① 金安镇 #1 / Jin'an Town #1</a>
+<a href="#yingzi-2" class="toc-item star">⭐ ② 七河镇 #5 / Qihe Town #5</a>
+<a href="#yingzi-3" class="toc-item">③ 金安镇 #3 / Jin'an Town #3</a>
+<a href="#yingzi-4" class="toc-item">④ 南溪村 / Nanxi Village</a>
+<a href="#yingzi-5" class="toc-item star">⭐ ⑤ 七河镇 (另一个) / Qihe Town (another)</a>
+<a href="#yingzi-6" class="toc-item">⑥ 南尧村 / Nanyao Village</a>
+</div>
+</div>
+
+<div class="toc-section">
+<h3>🏭 宝亮工厂取景地 / Baoliang Factory Locations (5)</h3>
+<div class="toc-list">
+<a href="#factory-1" class="toc-item star">⭐ ① 废弃水泥厂 / Abandoned Cement Plant</a>
+<a href="#factory-2" class="toc-item">② 砂石厂 #1 / Sand &amp; Gravel Plant #1</a>
+<a href="#factory-3" class="toc-item">③ 建材厂 / Building Materials Factory</a>
+<a href="#factory-4" class="toc-item">④ 砂石厂 #2 / Sand &amp; Gravel Plant #2</a>
+<a href="#factory-5" class="toc-item">⑤ 华新水泥厂 / Huaxin Cement Plant</a>
+</div>
+</div>
+
+<div class="toc-section">
+<h3>📦 快递站/物流园/货仓 / Delivery Stations / Logistics / Warehouses (5)</h3>
+<div class="toc-list">
+<a href="#logistics-1" class="toc-item">① 京东金山站 / JD Jinshan Station</a>
+<a href="#logistics-2" class="toc-item">② 京东厦禾路站 / JD Xiahe Road Station</a>
+<a href="#logistics-3" class="toc-item">③ 物流园 / Logistics Park</a>
+<a href="#logistics-4" class="toc-item">④ 七河镇货仓 / Qihe Town Warehouse</a>
+<a href="#logistics-5" class="toc-item">⑤ 货场 / Cargo Yard</a>
+</div>
+</div>
+
+<div class="toc-section">
+<h3>🛣️ 道路类场地 / Road-Type Locations (16)</h3>
+<div class="toc-list">
+<a href="#road-1" class="toc-item">🅿️ ① 停车场-船盛汽配城 / Parking-Chuansheng</a>
+<a href="#road-2" class="toc-item">🅿️ ② 停车场-宏文巷 / Parking-Hongwen Lane</a>
+<a href="#road-3" class="toc-item">🛣️ ③ 公路-高美古路 / Highway-Gaomeigulu</a>
+<a href="#road-4" class="toc-item">🌉 ④ 城市高架-348国道 / Overpass-Natl Hwy 348</a>
+<a href="#road-5" class="toc-item">🔀 ⑤ 岔路口-高美古路/红麦路 / Junction</a>
+<a href="#road-6" class="toc-item">🔀 ⑥ 岔路口-玉龙县文华段 / Junction-Yulong</a>
+<a href="#road-7" class="toc-item">🔀 ⑦ 岔路口-高美古路 / Junction-Gaomeigulu</a>
+<a href="#road-8" class="toc-item">🏜️ ⑧ 荒地 / Wasteland</a>
+<a href="#road-9" class="toc-item">🏜️ ⑨ 荒地-废弃驾校 / Abandoned Driving School</a>
+<a href="#road-10" class="toc-item">🚇 ⑩ 隧道-魔岩山 / Moyanshan Tunnel</a>
+<a href="#road-11" class="toc-item">🚇 ⑪ 隧道-石金山 / Shijinshan Tunnel</a>
+<a href="#road-12" class="toc-item">🚇 ⑫ 隧道-黄山 / Huangshan Tunnel</a>
+<a href="#road-13" class="toc-item">🚇 ⑬ 桥洞-白沙镇 / Bridge Underpass-Baisha</a>
+<a href="#road-14" class="toc-item">🛣️ ⑭ 高速-大丽高速 / Expressway-Dali-Lijiang</a>
+<a href="#road-15" class="toc-item">🛣️ ⑮ 高速-九河方向 / Expressway-Jiuhe Dir.</a>
+<a href="#road-16" class="toc-item">🛣️ ⑯ 高速-靠近丽江城 / Expressway-Near City</a>
+</div>
+</div>
+</div>
+
+<h2 class="section-title">🏠 英子家取景地 <span class="section-title-en">/ Yingzi's Home Locations</span></h2>
+
+<div id="yingzi-1" class="location">
+<div class="location-header">
+<div class="location-title">① 英子家 — 金安镇 #1<span class="location-title-en">Yingzi's Home — Jin'an Town #1</span></div>
+<div class="location-meta"><span class="badge">丽江东 / E. Lijiang</span><span class="badge">32km / 55分钟 / 55 min</span></div>
+</div>
+<div class="location-body">
+<div class="location-info">
+<div class="info-item"><label>距离 / Distance</label><span>32 公里 / km</span></div>
+<div class="info-item"><label>车程 / Drive Time</label><span>55 分钟 / min</span></div>
+<div class="info-item"><label>位置 / Location</label><span>丽江东 East of Lijiang</span></div>
+</div>
+<div class="notes"><strong>注意事项：</strong>进村道路比较窄，离目的地300米处有弯道。</div>
+<div class="notes"><strong>Notes：</strong>The village access road is relatively narrow, with a curve located 300 meters away from the destination.</div>
+<div class="images">
+<img src="lijiang_imgs/yingzi_4.jpeg" alt="金安镇#1-1">
+<img src="lijiang_imgs/yingzi_5.jpeg" alt="金安镇#1-2">
+<img src="lijiang_imgs/yingzi_6.jpeg" alt="金安镇#1-3">
+<img src="lijiang_imgs/yingzi_7.jpeg" alt="金安镇#1-4">
+<img src="lijiang_imgs/yingzi_8.jpeg" alt="金安镇#1-5">
+<img src="lijiang_imgs/yingzi_9.jpeg" alt="金安镇#1-6">
+
+</div>
+</div>
+</div>
+
+<div id="yingzi-2" class="location">
+<div class="location-header">
+<div class="location-title">② 英子家（七河镇）— ⭐推荐<span class="location-title-en">Yingzi's Home (Qihe Town) — ⭐ Recommended</span></div>
+<div class="location-meta"><span class="badge star">⭐ 推荐 / Recommended</span><span class="badge">25km / 40分钟 / 40 min</span></div>
+</div>
+<div class="location-body">
+<div class="location-info">
+<div class="info-item"><label>距离 / Distance</label><span>25 公里 / km</span></div>
+<div class="info-item"><label>车程 / Drive Time</label><span>40 分钟 / min</span></div>
+<div class="info-item"><label>位置 / Location</label><span>七河镇 Qihe Town</span></div>
+</div>
+<div class="notes"><strong>注意事项：</strong>房屋所在位置不错，但是能看到一侧有新修的房子。</div>
+<div class="notes"><strong>Notes：</strong>The location of the house is good, but you can see newly built houses on one side.</div>
+<div class="images">
+<img src="lijiang_imgs/yingzi_14.jpeg" alt="七河镇#5-1">
+<img src="lijiang_imgs/yingzi_15.jpeg" alt="七河镇#5-2">
+<img src="lijiang_imgs/yingzi_16.jpeg" alt="七河镇#5-3">
+<img src="lijiang_imgs/yingzi_17.jpeg" alt="七河镇#5-4">
+<img src="lijiang_imgs/yingzi_18.jpeg" alt="七河镇#5-5">
+<img src="lijiang_imgs/yingzi_19.jpeg" alt="七河镇#5-6">
+<img src="lijiang_imgs/yingzi_20.jpeg" alt="七河镇#5-7">
+<img src="lijiang_imgs/yingzi_21.jpeg" alt="七河镇#5-8">
+<img src="lijiang_imgs/yingzi_22.jpeg" alt="七河镇#5-9">
+<img src="lijiang_imgs/yingzi_10.jpeg" alt="金安镇#1-7">
+<img src="lijiang_imgs/yingzi_11.jpeg" alt="金安镇#1-8">
+<img src="lijiang_imgs/yingzi_12.jpeg" alt="金安镇#1-9">
+
+</div>
+</div>
+</div>
+
+<div id="yingzi-3" class="location">
+<div class="location-header">
+<div class="location-title">③ 英子家 — 金安镇 #3<span class="location-title-en">Yingzi's Home — Jin'an Town #3</span></div>
+<div class="location-meta"><span class="badge">丽江东 / E. Lijiang</span><span class="badge">35km / 70分钟 / 70 min</span></div>
+</div>
+<div class="location-body">
+<div class="location-info">
+<div class="info-item"><label>距离 / Distance</label><span>35 公里 / km</span></div>
+<div class="info-item"><label>车程 / Drive Time</label><span>70 分钟 / min</span></div>
+<div class="info-item"><label>位置 / Location</label><span>丽江东 East of Lijiang</span></div>
+</div>
+<div class="notes"><strong>注意事项：</strong>有一段10公里左右的乡道较窄，还有两百米左右的水泥路只能通过小车，还需要步行约100米。</div>
+<div class="notes"><strong>Notes：</strong>There is a narrow country road of about 10 kilometers. Additionally, there is around 200 meters of cement road only accessible to small cars, followed by a walking distance of approximately 100 meters.</div>
+<div class="images">
+<img src="lijiang_imgs/yingzi_23.jpeg" alt="金安镇#3-1">
+<img src="lijiang_imgs/yingzi_13.jpeg" alt="金安镇#1-10">
+<img src="lijiang_imgs/yingzi_24.jpeg" alt="金安镇#3-2">
+<img src="lijiang_imgs/yingzi_25.jpeg" alt="金安镇#3-3">
+<img src="lijiang_imgs/yingzi_26.jpeg" alt="金安镇#3-4">
+</div>
+</div>
+</div>
+
+<div id="yingzi-4" class="location">
+<div class="location-header">
+<div class="location-title">④ 英子家 — 南溪村<span class="location-title-en">Yingzi's Home — Nanxi Village</span></div>
+<div class="location-meta"><span class="badge">丽江西 / W. Lijiang</span><span class="badge alert">海拔3000米 / Alt. 3000m</span><span class="badge">20km / 35分钟 / 35 min</span></div>
+</div>
+<div class="location-body">
+<div class="location-info">
+<div class="info-item"><label>距离 / Distance</label><span>20 公里 / km</span></div>
+<div class="info-item"><label>车程 / Drive Time</label><span>35 分钟 / min</span></div>
+<div class="info-item"><label>位置 / Location</label><span>丽江西 Western Lijiang</span></div>
+</div>
+<div class="notes"><strong>特殊情况：</strong>海拔3000米，高原地区需注意。</div>
+<div class="notes"><strong>Notes：</strong>The altitude is 3000 meters. Please be aware of high-altitude conditions.</div>
+<div class="images">
+<img src="lijiang_imgs/yingzi_27.jpeg" alt="南溪村-1">
+<img src="lijiang_imgs/yingzi_28.jpeg" alt="南溪村-2">
+<img src="lijiang_imgs/yingzi_29.jpeg" alt="南溪村-3">
+<img src="lijiang_imgs/yingzi_30.jpeg" alt="南溪村-4">
+</div>
+</div>
+</div>
+
+<div id="yingzi-5" class="location">
+<div class="location-header">
+<div class="location-title">⑤ 英子家（七河镇）— ⭐推荐<span class="location-title-en">Yingzi's Home (Qihe Town) — ⭐ Recommended</span></div>
+<div class="location-meta"><span class="badge star">⭐ 推荐 / Recommended</span><span class="badge">24km / 40分钟 / 40 min</span></div>
+</div>
+<div class="location-body">
+<div class="location-info">
+<div class="info-item"><label>距离 / Distance</label><span>24 公里 / km</span></div>
+<div class="info-item"><label>车程 / Drive Time</label><span>40 分钟 / min</span></div>
+<div class="info-item"><label>位置 / Location</label><span>丽江南 South of Lijiang</span></div>
+</div>
+<div class="notes"><strong>优势：</strong>院落比较大，房屋多。</div>
+<div class="notes"><strong>注意事项：</strong>离丽江机场较近，偶尔能听到飞机声音。</div>
+<div class="notes"><strong>Notes：</strong>The courtyard is relatively large, with many houses. Houses 5, 6 are all in Qihe Town and are not far apart. They are relatively close to Lijiang Airport, and sometimes you can hear the sound of airplanes.</div>
+<div class="images">
+<img src="lijiang_imgs/yingzi_31.jpeg" alt="七河镇-1">
+<img src="lijiang_imgs/yingzi_32.jpeg" alt="七河镇-2">
+<img src="lijiang_imgs/yingzi_33.jpeg" alt="七河镇-3">
+<img src="lijiang_imgs/yingzi_34.jpeg" alt="七河镇-4">
+<img src="lijiang_imgs/yingzi_35.jpeg" alt="七河镇-5">
+<img src="lijiang_imgs/yingzi_36.jpeg" alt="七河镇-6">
+<img src="lijiang_imgs/yingzi_37.jpeg" alt="七河镇-7">
+<img src="lijiang_imgs/yingzi_38.jpeg" alt="七河镇-8">
+<img src="lijiang_imgs/yingzi_39.jpeg" alt="七河镇-9">
+<img src="lijiang_imgs/yingzi_40.jpeg" alt="七河镇-10">
+<img src="lijiang_imgs/yingzi_41.jpeg" alt="七河镇-11">
+</div>
+</div>
+</div>
+
+<div id="yingzi-6" class="location">
+<div class="location-header">
+<div class="location-title">⑥ 英子家（南尧村）<span class="location-title-en">Yingzi's Home (Nanyao Village)</span></div>
+<div class="location-meta"><span class="badge">丽江西 / W. Lijiang</span><span class="badge alert">⚠️ 录音风险 / Audio Risk</span><span class="badge">18km / 30分钟 / 30 min</span></div>
+</div>
+<div class="location-body">
+<div class="location-info">
+<div class="info-item"><label>距离 / Distance</label><span>18 公里 / km</span></div>
+<div class="info-item"><label>车程 / Drive Time</label><span>30 分钟 / min</span></div>
+<div class="info-item"><label>位置 / Location</label><span>丽江西 West of Lijiang</span></div>
+</div>
+<div class="notes"><strong>注意事项：</strong>南尧村老房子，第一次云南堪景有看过。房子旁有条小沟渠，流水声可能会影响录音。</div>
+<div class="notes"><strong>Notes：</strong>Old houses in Nanyao Village were seen during the first location scouting in Yunnan. There is a small ditch beside the house, and the sound of flowing water might affect the recording.</div>
+<div class="images">
+<img src="lijiang_imgs/yingzi_42.jpeg" alt="南尧村-1">
+<img src="lijiang_imgs/yingzi_43.jpeg" alt="南尧村-2">
+<img src="lijiang_imgs/yingzi_44.jpeg" alt="南尧村-3">
+<img src="lijiang_imgs/yingzi_45.jpeg" alt="南尧村-4">
+<img src="lijiang_imgs/yingzi_46.jpeg" alt="南尧村-5">
+<img src="lijiang_imgs/yingzi_47.jpeg" alt="南尧村-6">
+<img src="lijiang_imgs/yingzi_48.jpeg" alt="南尧村-7">
+<img src="lijiang_imgs/yingzi_49.jpeg" alt="南尧村-8">
+<img src="lijiang_imgs/yingzi_50.jpeg" alt="南尧村-9">
+<img src="lijiang_imgs/yingzi_51.jpeg" alt="南尧村-10">
+<img src="lijiang_imgs/yingzi_52.jpeg" alt="南尧村-11">
+</div>
+</div>
+</div>
+
+<h2 class="section-title">🏭 宝亮工厂取景地 <span class="section-title-en">/ Baoliang Factory Locations</span></h2>
+
+<div id="factory-1" class="location">
+<div class="location-header">
+<div class="location-title">① 废弃水泥厂（关丽路）— ⭐GREAT!<span class="location-title-en">Abandoned Cement Plant (Guanli Road) — ⭐ GREAT!</span></div>
+<div class="location-meta"><span class="badge star">⭐ GREAT!</span><span class="badge">10km / 20分钟 / 20 min</span></div>
+</div>
+<div class="location-body">
+<div class="location-info">
+<div class="info-item"><label>距离 / Distance</label><span>10 公里 / km</span></div>
+<div class="info-item"><label>车程 / Drive Time</label><span>20 分钟 / min</span></div>
+<div class="info-item"><label>位置 / Location</label><span>丽江南 South of Lijiang</span></div>
+</div>
+<div class="notes"><strong>评价 / Review：</strong>废弃水泥厂在这个园区里面，水泥厂及周围太杂乱。<strong style="color:#e65100">Abandoned = GREAT!!!!!</strong></div>
+<div class="notes"><strong>Notes：</strong>The abandoned cement factory is located within this industrial park. The cement plant and its surroundings are quite cluttered. <strong style="color:#e65100">Abandoned = GREAT!!!!!</strong></div>
+<div class="images">
+<img src="lijiang_imgs/factory_4.jpeg" alt="废弃水泥厂-1">
+<img src="lijiang_imgs/factory_5.jpeg" alt="废弃水泥厂-2">
+<img src="lijiang_imgs/factory_6.jpeg" alt="废弃水泥厂-3">
+<img src="lijiang_imgs/factory_7.jpeg" alt="废弃水泥厂-4">
+</div>
+</div>
+</div>
+
+<div id="factory-2" class="location">
+<div class="location-header">
+<div class="location-title">② 砂石厂 #1<span class="location-title-en">Sand &amp; Gravel Plant #1</span></div>
+<div class="location-meta"><span class="badge">丽江东 / E. Lijiang</span><span class="badge alert">⚠️ 运营中 / In Operation</span><span class="badge">12km / 25分钟 / 25 min</span></div>
+</div>
+<div class="location-body">
+<div class="location-info">
+<div class="info-item"><label>距离 / Distance</label><span>12 公里 / km</span></div>
+<div class="info-item"><label>车程 / Drive Time</label><span>25 分钟 / min</span></div>
+<div class="info-item"><label>位置 / Location</label><span>丽江东 East of Lijiang</span></div>
+</div>
+<div class="notes"><strong>状态 / Status：</strong>砂石厂，运营中。<strong style="color:#c62828">问题是没有二楼/三楼办公室。</strong></div>
+<div class="notes"><strong>Notes：</strong>Sand and gravel plant, in operation. Problem is there is no 2nd/3rd floor office.</div>
+<div class="images">
+<img src="lijiang_imgs/factory_8.jpeg" alt="砂石厂#1-1">
+<img src="lijiang_imgs/factory_9.jpeg" alt="砂石厂#1-2">
+<img src="lijiang_imgs/factory_10.jpeg" alt="砂石厂#1-3">
+<img src="lijiang_imgs/factory_11.jpeg" alt="砂石厂#1-4">
+<img src="lijiang_imgs/factory_12.jpeg" alt="砂石厂#1-5">
+<img src="lijiang_imgs/factory_13.jpeg" alt="砂石厂#1-6">
+<img src="lijiang_imgs/factory_14.jpeg" alt="砂石厂#1-7">
+</div>
+</div>
+</div>
+
+<div id="factory-3" class="location">
+<div class="location-header">
+<div class="location-title">③ 建材厂<span class="location-title-en">Building Materials Factory</span></div>
+<div class="location-meta"><span class="badge">丽江东 / E. Lijiang</span><span class="badge">15km / 20分钟 / 20 min</span></div>
+</div>
+<div class="location-body">
+<div class="location-info">
+<div class="info-item"><label>距离 / Distance</label><span>15 公里 / km</span></div>
+<div class="info-item"><label>车程 / Drive Time</label><span>20 分钟 / min</span></div>
+<div class="info-item"><label>位置 / Location</label><span>丽江东 East Lijiang</span></div>
+</div>
+<div class="images">
+<img src="lijiang_imgs/factory_15.jpeg" alt="建材厂-1">
+<img src="lijiang_imgs/factory_16.jpeg" alt="建材厂-2">
+<img src="lijiang_imgs/factory_17.jpeg" alt="建材厂-3">
+<img src="lijiang_imgs/factory_18.jpeg" alt="建材厂-4">
+<img src="lijiang_imgs/factory_19.jpeg" alt="建材厂-5">
+</div>
+</div>
+</div>
+
+<div id="factory-4" class="location">
+<div class="location-header">
+<div class="location-title">④ 砂石厂 #2<span class="location-title-en">Sand &amp; Gravel Plant #2</span></div>
+<div class="location-meta"><span class="badge">丽江东 / E. Lijiang</span><span class="badge">25km / 35分钟 / 35 min</span></div>
+</div>
+<div class="location-body">
+<div class="location-info">
+<div class="info-item"><label>距离 / Distance</label><span>25 公里 / km</span></div>
+<div class="info-item"><label>车程 / Drive Time</label><span>35 分钟 / min</span></div>
+<div class="info-item"><label>位置 / Location</label><span>丽江东 East Lijiang</span></div>
+</div>
+<div class="images">
+<img src="lijiang_imgs/factory_20.jpeg" alt="砂石厂#2-1">
+<img src="lijiang_imgs/factory_21.jpeg" alt="砂石厂#2-2">
+<img src="lijiang_imgs/factory_22.jpeg" alt="砂石厂#2-3">
+<img src="lijiang_imgs/factory_23.jpeg" alt="砂石厂#2-4">
+<img src="lijiang_imgs/factory_24.jpeg" alt="砂石厂#2-5">
+<img src="lijiang_imgs/factory_25.jpeg" alt="砂石厂#2-6">
+<img src="lijiang_imgs/factory_26.jpeg" alt="砂石厂#2-7">
+<img src="lijiang_imgs/factory_27.jpeg" alt="砂石厂#2-8">
+<img src="lijiang_imgs/factory_28.jpeg" alt="砂石厂#2-9">
+</div>
+</div>
+</div>
+
+<div id="factory-5" class="location">
+<div class="location-header">
+<div class="location-title">⑤ 水泥厂（华新水泥厂·剑川）<span class="location-title-en">Cement Plant (Huaxin Cement Plant · Jianchuan)</span></div>
+<div class="location-meta"><span class="badge">丽江南 / S. Lijiang</span><span class="badge alert">⚠️ 远/运营中 / Far / In Op.</span><span class="badge">55km / 55分钟 / 55 min</span></div>
+</div>
+<div class="location-body">
+<div class="location-info">
+<div class="info-item"><label>距离 / Distance</label><span>55 公里 / km</span></div>
+<div class="info-item"><label>车程 / Drive Time</label><span>55 分钟 / min</span></div>
+<div class="info-item"><label>位置 / Location</label><span>丽江南 South of Lijiang</span></div>
+</div>
+<div class="notes"><strong>状态 / Status：</strong>厂区比较大。生产经营中。</div>
+<div class="notes"><strong>Notes：</strong>The factory area is relatively large. It is in production and operation.</div>
+<div class="images">
+<img src="lijiang_imgs/factory_29.jpeg" alt="华新水泥厂-1">
+<img src="lijiang_imgs/factory_30.jpeg" alt="华新水泥厂-2">
+<img src="lijiang_imgs/factory_31.jpeg" alt="华新水泥厂-3">
+<img src="lijiang_imgs/factory_32.jpeg" alt="华新水泥厂-4">
+<img src="lijiang_imgs/factory_33.jpeg" alt="华新水泥厂-5">
+<img src="lijiang_imgs/factory_34.jpeg" alt="华新水泥厂-6">
+<img src="lijiang_imgs/factory_35.jpeg" alt="华新水泥厂-7">
+<img src="lijiang_imgs/factory_36.jpeg" alt="华新水泥厂-8">
+<img src="lijiang_imgs/factory_37.jpeg" alt="华新水泥厂-9">
+<img src="lijiang_imgs/factory_38.jpeg" alt="华新水泥厂-10">
+<img src="lijiang_imgs/factory_39.jpeg" alt="华新水泥厂-11">
+<img src="lijiang_imgs/factory_40.jpeg" alt="华新水泥厂-12">
+<img src="lijiang_imgs/factory_41.jpeg" alt="华新水泥厂-13">
+<img src="lijiang_imgs/factory_42.jpeg" alt="华新水泥厂-14">
+<img src="lijiang_imgs/factory_43.jpeg" alt="华新水泥厂-15">
+<img src="lijiang_imgs/factory_44.jpeg" alt="华新水泥厂-16">
+<img src="lijiang_imgs/factory_45.jpeg" alt="华新水泥厂-17">
+<img src="lijiang_imgs/factory_46.jpeg" alt="华新水泥厂-18">
+<img src="lijiang_imgs/factory_47.jpeg" alt="华新水泥厂-19">
+<img src="lijiang_imgs/factory_48.jpeg" alt="华新水泥厂-20">
+<img src="lijiang_imgs/factory_49.jpeg" alt="华新水泥厂-21">
+<img src="lijiang_imgs/factory_50.jpeg" alt="华新水泥厂-22">
+<img src="lijiang_imgs/factory_51.jpeg" alt="华新水泥厂-23">
+<img src="lijiang_imgs/factory_52.jpeg" alt="华新水泥厂-24">
+</div>
+</div>
+</div>
+
+<h2 class="section-title">📦 快递站/物流园/货仓 <span class="section-title-en">/ Delivery Stations / Logistics / Warehouses</span></h2>
+
+<div id="logistics-1" class="location">
+<div class="location-header">
+<div class="location-title">① 京东快递站（金山站）<span class="location-title-en">JD.com Express Station (Jinshan Station)</span></div>
+<div class="location-meta"><span class="badge">丽江市区 / Downtown</span></div>
+</div>
+<div class="location-body">
+<div class="location-info">
+<div class="info-item"><label>位置 / Location</label><span>丽江市区 Lijiang Downtown</span></div>
+</div>
+<div class="notes"><strong>备注 / Remarks：</strong>京东对面是一个"菜鲜生"配送仓库。</div>
+<div class="notes"><strong>Notes：</strong>Opposite the JD.com station is a "Caixiansheng" distribution warehouse.</div>
+<div class="images">
+<img src="lijiang_imgs/logistics_4.jpeg" alt="京东金山站-1">
+<img src="lijiang_imgs/logistics_5.jpeg" alt="京东金山站-2">
+<img src="lijiang_imgs/logistics_6.jpeg" alt="京东金山站-3">
+<img src="lijiang_imgs/logistics_7.jpeg" alt="京东金山站-4">
+</div>
+</div>
+</div>
+
+<div id="logistics-2" class="location">
+<div class="location-header">
+<div class="location-title">② 京东快递站（厦禾路站）<span class="location-title-en">JD.com Express Station (Xiahe Road Station)</span></div>
+<div class="location-meta"><span class="badge">10km / 20分钟 / 20 min</span></div>
+</div>
+<div class="location-body">
+<div class="location-info">
+<div class="info-item"><label>距离 / Distance</label><span>10 公里 / km</span></div>
+<div class="info-item"><label>车程 / Drive Time</label><span>20 分钟 / min</span></div>
+</div>
+<div class="images">
+<img src="lijiang_imgs/logistics_8.jpeg" alt="京东厦禾路站-1">
+<img src="lijiang_imgs/logistics_9.jpeg" alt="京东厦禾路站-2">
+<img src="lijiang_imgs/logistics_10.jpeg" alt="京东厦禾路站-3">
+</div>
+</div>
+</div>
+
+<div id="logistics-3" class="location">
+<div class="location-header">
+<div class="location-title">③ 物流园<span class="location-title-en">Logistics Park</span></div>
+<div class="location-meta"><span class="badge">丽江城东 / E. Lijiang City</span></div>
+</div>
+<div class="location-body">
+<div class="location-info">
+<div class="info-item"><label>位置 / Location</label><span>丽江城东 East of Lijiang City</span></div>
+</div>
+<div class="notes"><strong>特点 / Features：</strong>9米层高，火热超市剩余少位置。</div>
+<div class="notes"><strong>Notes：</strong>9-meter ceiling height; limited space remaining (formerly a busy supermarket).</div>
+<div class="images">
+<img src="lijiang_imgs/logistics_11.jpeg" alt="物流园-1">
+<img src="lijiang_imgs/logistics_12.jpeg" alt="物流园-2">
+<img src="lijiang_imgs/logistics_13.jpeg" alt="物流园-3">
+<img src="lijiang_imgs/logistics_14.jpeg" alt="物流园-4">
+<img src="lijiang_imgs/logistics_15.jpeg" alt="物流园-5">
+<img src="lijiang_imgs/logistics_16.jpeg" alt="物流园-6">
+<img src="lijiang_imgs/logistics_17.jpeg" alt="物流园-7">
+</div>
+</div>
+</div>
+
+<div id="logistics-4" class="location">
+<div class="location-header">
+<div class="location-title">④ 货仓（七河镇）<span class="location-title-en">Warehouse (Qihe Town)</span></div>
+<div class="location-meta"><span class="badge">丽江南 / S. Lijiang</span><span class="badge">25km / 35分钟 / 35 min</span></div>
+</div>
+<div class="location-body">
+<div class="location-info">
+<div class="info-item"><label>距离 / Distance</label><span>25 公里 / km</span></div>
+<div class="info-item"><label>车程 / Drive Time</label><span>35 分钟 / min</span></div>
+<div class="info-item"><label>位置 / Location</label><span>丽江南 South of Lijiang</span></div>
+</div>
+<div class="notes"><strong>特点 / Features：</strong>仓库在山脚下，进门左手边仓库较大，加工魔芋还未生产。右手仓库较小。</div>
+<div class="notes"><strong>Notes：</strong>The warehouse is at the foot of the mountain. The warehouse on the left as you enter is larger, and the konjac processing has not yet started. The warehouse on the right is smaller.</div>
+<div class="images">
+<img src="lijiang_imgs/logistics_18.jpeg" alt="七河镇货仓-1">
+<img src="lijiang_imgs/logistics_19.jpeg" alt="七河镇货仓-2">
+<img src="lijiang_imgs/logistics_20.jpeg" alt="七河镇货仓-3">
+<img src="lijiang_imgs/logistics_21.jpeg" alt="七河镇货仓-4">
+<img src="lijiang_imgs/logistics_22.jpeg" alt="七河镇货仓-5">
+<img src="lijiang_imgs/logistics_23.jpeg" alt="七河镇货仓-6">
+<img src="lijiang_imgs/logistics_24.jpeg" alt="七河镇货仓-7">
+<img src="lijiang_imgs/logistics_25.jpeg" alt="七河镇货仓-8">
+</div>
+</div>
+</div>
+
+<div id="logistics-5" class="location">
+<div class="location-header">
+<div class="location-title">⑤ 货场<span class="location-title-en">Cargo Yard</span></div>
+<div class="location-meta"><span class="badge">丽江西 / W. Lijiang</span><span class="badge">15km / 20分钟 / 20 min</span></div>
+</div>
+<div class="location-body">
+<div class="location-info">
+<div class="info-item"><label>距离 / Distance</label><span>15 公里 / km</span></div>
+<div class="info-item"><label>车程 / Drive Time</label><span>20 分钟 / min</span></div>
+<div class="info-item"><label>位置 / Location</label><span>丽江西 West of Lijiang</span></div>
+</div>
+<div class="notes"><strong>公司 / Company：</strong>雪域绿川农业有限公司 / Xueyü Lüchuan Agriculture Co., Ltd.</div>
+<div class="images">
+<img src="lijiang_imgs/logistics_26.jpeg" alt="货场-1">
+<img src="lijiang_imgs/logistics_27.jpeg" alt="货场-2">
+<img src="lijiang_imgs/logistics_28.jpeg" alt="货场-3">
+<img src="lijiang_imgs/logistics_29.jpeg" alt="货场-4">
+<img src="lijiang_imgs/logistics_30.jpeg" alt="货场-5">
+<img src="lijiang_imgs/logistics_31.jpeg" alt="货场-6">
+<img src="lijiang_imgs/logistics_32.jpeg" alt="货场-7">
+<img src="lijiang_imgs/logistics_33.jpeg" alt="货场-8">
+<img src="lijiang_imgs/logistics_34.jpeg" alt="货场-9">
+<img src="lijiang_imgs/logistics_35.jpeg" alt="货场-10">
+<img src="lijiang_imgs/logistics_36.jpeg" alt="货场-11">
+<img src="lijiang_imgs/logistics_37.jpeg" alt="货场-12">
+<img src="lijiang_imgs/logistics_38.jpeg" alt="货场-13">
+<img src="lijiang_imgs/logistics_39.jpeg" alt="货场-14">
+<img src="lijiang_imgs/logistics_40.jpeg" alt="货场-15">
+<img src="lijiang_imgs/logistics_41.jpeg" alt="货场-16">
+<img src="lijiang_imgs/logistics_42.jpeg" alt="货场-17">
+</div>
+</div>
+</div>
+
+<h2 class="section-title">🛣️ 道路类场地 <span class="section-title-en">/ Road-Type Locations</span></h2>
+
+<div id="road-1" class="location">
+<div class="location-header">
+<div class="location-title">🅿️ ① 停车场 — 船盛汽配城<span class="location-title-en">Parking Lot — Chuansheng Auto Parts City</span></div>
+<div class="location-meta"><span class="badge">丽江西 / W. Lijiang</span><span class="badge">5km / 12分钟 / 12 min</span></div>
+</div>
+<div class="location-body">
+<div class="location-info">
+<div class="info-item"><label>距离 / Distance</label><span>5 公里 / km</span></div>
+<div class="info-item"><label>车程 / Drive Time</label><span>12 分钟 / min</span></div>
+<div class="info-item"><label>位置 / Location</label><span>丽江西 West of Lijiang</span></div>
+</div>
+<div class="notes"><strong>用途 / Purpose：</strong>任的求婚场景（更适合在私人停车场拍摄，便于封锁和夜间工作）</div>
+<div class="notes"><strong>Notes：</strong>Ren's proposal scene (better suited for a private parking lot — easier lockdown and night work).</div>
+<div class="notes"><strong>特点 / Features：</strong>停车场车辆多，杂乱、无序。The parking lot has many vehicles, which are messy and disorganized.</div>
+<div class="images">
+<img src="lijiang_imgs/road_停车场_1.jpeg" alt="船盛汽配城-1">
+<img src="lijiang_imgs/road_停车场_2.jpeg" alt="船盛汽配城-2">
+<img src="lijiang_imgs/road_停车场_3.jpeg" alt="船盛汽配城-3">
+<img src="lijiang_imgs/road_停车场_4.jpeg" alt="船盛汽配城-4">
+<img src="lijiang_imgs/road_停车场_5.jpeg" alt="船盛汽配城-5">
+<img src="lijiang_imgs/road_停车场_6.jpeg" alt="船盛汽配城-6">
+<img src="lijiang_imgs/road_停车场_7.jpeg" alt="船盛汽配城-7">
+<img src="lijiang_imgs/road_停车场_8.jpeg" alt="船盛汽配城-8">
+<img src="lijiang_imgs/road_停车场_9.png" alt="船盛汽配城-9">
+<img src="lijiang_imgs/road_停车场_10.png" alt="船盛汽配城-10">
+<img src="lijiang_imgs/road_停车场_11.png" alt="船盛汽配城-11">
+</div>
+</div>
+</div>
+
+<div id="road-2" class="location">
+<div class="location-header">
+<div class="location-title">🅿️ ② 停车场 — 宏文巷<span class="location-title-en">Parking Lot — Hongwen Lane</span></div>
+<div class="location-meta"><span class="badge">丽江北 / N. Lijiang</span><span class="badge">5km / 12分钟 / 12 min</span></div>
+</div>
+<div class="location-body">
+<div class="location-info">
+<div class="info-item"><label>距离 / Distance</label><span>5 公里 / km</span></div>
+<div class="info-item"><label>车程 / Drive Time</label><span>12 分钟 / min</span></div>
+<div class="info-item"><label>位置 / Location</label><span>丽江北 Northern Lijiang</span></div>
+</div>
+<div class="notes"><strong>特点 / Features：</strong>停车场挺大，但是周围建筑太多。The parking lot is quite large, but there are too many buildings around.</div>
+<div class="images">
+<img src="lijiang_imgs/road_停车场_12.jpeg" alt="宏文巷-1">
+</div>
+</div>
+</div>
+
+<div id="road-3" class="location">
+<div class="location-header">
+<div class="location-title">🛣️ ③ 公路 — 高美古路<span class="location-title-en">Highway — Gaomeigulu Road</span></div>
+<div class="location-meta"><span class="badge">丽江西南 / SW Lijiang</span><span class="badge">30km / 45分钟 / 45 min</span></div>
+</div>
+<div class="location-body">
+<div class="location-info">
+<div class="info-item"><label>距离 / Distance</label><span>30 公里 / km</span></div>
+<div class="info-item"><label>车程 / Drive Time</label><span>45 分钟 / min</span></div>
+<div class="info-item"><label>位置 / Location</label><span>丽江西南 Southwest of Lijiang</span></div>
+</div>
+<div class="notes"><strong>优势 / Advantage：</strong>这条公路提供独特的风景变化优势。可以尝试在卡车驾驶室平台上进行对话场景，换装/换发型以完成多个不同场景。</div>
+<div class="notes"><strong>Notes：</strong>This road offers the rare advantage of changing scenery. We could try some dialogues on truck cab on platform here, change costumes/hair to do a bunch of different scenes?</div>
+<div class="images">
+<img src="lijiang_imgs/road_公路_1.jpeg" alt="高美古路-1">
+<img src="lijiang_imgs/road_公路_2.jpeg" alt="高美古路-2">
+<img src="lijiang_imgs/road_公路_3.jpeg" alt="高美古路-3">
+<img src="lijiang_imgs/road_公路_4.jpeg" alt="高美古路-4">
+<img src="lijiang_imgs/road_公路_5.jpeg" alt="高美古路-5">
+<img src="lijiang_imgs/road_公路_6.jpeg" alt="高美古路-6">
+<img src="lijiang_imgs/road_公路_7.jpeg" alt="高美古路-7">
+</div>
+</div>
+</div>
+
+<div id="road-4" class="location">
+<div class="location-header">
+<div class="location-title">🌉 ④ 城市高架 — 348国道<span class="location-title-en">Urban Overpass — National Highway 348</span></div>
+<div class="location-meta"><span class="badge">丽江西 / W. Lijiang</span><span class="badge">10km / 25分钟 / 25 min</span></div>
+</div>
+<div class="location-body">
+<div class="location-info">
+<div class="info-item"><label>距离 / Distance</label><span>10 公里 / km</span></div>
+<div class="info-item"><label>车程 / Drive Time</label><span>25 分钟 / min</span></div>
+<div class="info-item"><label>位置 / Location</label><span>丽江西 West of Lijiang</span></div>
+</div>
+<div class="notes"><strong>用途 / Purpose：</strong>任送英子到上海郊区下车场景。</div>
+<div class="notes"><strong>Notes：</strong>Ren Xiatian dropped Yingzi off in the suburbs of Shanghai.</div>
+<div class="images">
+<img src="lijiang_imgs/road_高架_1.jpeg" alt="348国道-1">
+</div>
+</div>
+</div>
+
+<div id="road-5" class="location">
+<div class="location-header">
+<div class="location-title">🔀 ⑤ 公路岔路口 — 高美古路/红麦路<span class="location-title-en">Road Junction — Gaomeigulu / Hongmai Road</span></div>
+<div class="location-meta"><span class="badge star">⭐ 夜景待看 / Night View TBD</span><span class="badge">丽江西南 / SW Lijiang</span><span class="badge">32km / 45分钟 / 45 min</span></div>
+</div>
+<div class="location-body">
+<div class="location-info">
+<div class="info-item"><label>距离 / Distance</label><span>32 公里 / km</span></div>
+<div class="info-item"><label>车程 / Drive Time</label><span>45 分钟 / min</span></div>
+<div class="info-item"><label>位置 / Location</label><span>丽江西南 Southwest of Lijiang</span></div>
+</div>
+<div class="notes"><strong>注意 / Note：</strong>夜景还未看过。Night scene has not been checked yet.</div>
+<div class="images">
+<img src="lijiang_imgs/road_岔路口_1.jpeg" alt="高美古路岔路口-1">
+<img src="lijiang_imgs/road_岔路口_2.jpeg" alt="高美古路岔路口-2">
+<img src="lijiang_imgs/road_岔路口_3.jpeg" alt="高美古路岔路口-3">
+<img src="lijiang_imgs/road_岔路口_4.jpeg" alt="高美古路岔路口-4">
+<img src="lijiang_imgs/road_岔路口_5.jpeg" alt="高美古路岔路口-5">
+<img src="lijiang_imgs/road_岔路口_6.jpeg" alt="高美古路岔路口-6">
+<img src="lijiang_imgs/road_岔路口_7.jpeg" alt="高美古路岔路口-7">
+<img src="lijiang_imgs/road_岔路口_8.jpeg" alt="高美古路岔路口-8">
+<img src="lijiang_imgs/road_岔路口_9.jpeg" alt="高美古路岔路口-9">
+<img src="lijiang_imgs/road_岔路口_10.jpeg" alt="高美古路岔路口-10">
+<img src="lijiang_imgs/road_岔路口_11.jpeg" alt="高美古路岔路口-11">
+<img src="lijiang_imgs/road_岔路口_12.jpeg" alt="高美古路岔路口-12">
+<img src="lijiang_imgs/road_岔路口_13.jpeg" alt="高美古路岔路口-13">
+<img src="lijiang_imgs/road_岔路口_14.jpeg" alt="高美古路岔路口-14">
+<img src="lijiang_imgs/road_岔路口_15.jpeg" alt="高美古路岔路口-15">
+</div>
+</div>
+</div>
+
+<div id="road-6" class="location">
+<div class="location-header">
+<div class="location-title">🔀 ⑥ 岔路口 — 玉龙县文华段<span class="location-title-en">Junction — Yulong County Wenhua Section</span></div>
+<div class="location-meta"><span class="badge">丽江西 / W. Lijiang</span><span class="badge">9km / 20分钟 / 20 min</span></div>
+</div>
+<div class="location-body">
+<div class="location-info">
+<div class="info-item"><label>距离 / Distance</label><span>9 公里 / km</span></div>
+<div class="info-item"><label>车程 / Drive Time</label><span>20 分钟 / min</span></div>
+<div class="info-item"><label>位置 / Location</label><span>丽江西 West of Lijiang</span></div>
+</div>
+<div class="notes"><strong>特点 / Features：</strong>这个岔路口，有一条较窄的水泥路。周边环境不太理想，透过树林能看到丽江城市。</div>
+<div class="notes"><strong>Notes：</strong>At this fork in the road, there is a relatively narrow cement road. The surrounding environment is not very ideal, and through the trees, you can see the city of Lijiang.</div>
+</div>
+</div>
+
+<div id="road-7" class="location">
+<div class="location-header">
+<div class="location-title">🔀 ⑦ 岔路口 — 高美古路<span class="location-title-en">Junction — Gaomeigulu Road</span></div>
+<div class="location-meta"><span class="badge">丽江西南 / SW Lijiang</span></div>
+</div>
+<div class="location-body">
+<div class="location-info">
+<div class="info-item"><label>位置 / Location</label><span>丽江西南 Southwest of Lijiang</span></div>
+</div>
+<div class="images">
+<img src="lijiang_imgs/road_岔路口_1.jpeg" alt="高美古路岔路口">
+</div>
+</div>
+</div>
+
+<div id="road-8" class="location">
+<div class="location-header">
+<div class="location-title">🏜️ ⑧ 荒地<span class="location-title-en">Wasteland</span></div>
+<div class="location-meta"><span class="badge">丽江北 / N. Lijiang</span><span class="badge">13km / 30分钟 / 30 min</span></div>
+</div>
+<div class="location-body">
+<div class="location-info">
+<div class="info-item"><label>距离 / Distance</label><span>13 公里 / km</span></div>
+<div class="info-item"><label>车程 / Drive Time</label><span>30 分钟 / min</span></div>
+<div class="info-item"><label>位置 / Location</label><span>丽江北 Northern Lijiang</span></div>
+</div>
+<div class="images">
+<img src="lijiang_imgs/road_荒地_1.jpeg" alt="荒地-1">
+<img src="lijiang_imgs/road_荒地_2.jpeg" alt="荒地-2">
+<img src="lijiang_imgs/road_荒地_3.jpeg" alt="荒地-3">
+<img src="lijiang_imgs/road_荒地_4.jpeg" alt="荒地-4">
+<img src="lijiang_imgs/road_荒地_5.jpeg" alt="荒地-5">
+</div>
+</div>
+</div>
+
+<div id="road-9" class="location">
+<div class="location-header">
+<div class="location-title">🏜️ ⑨ 荒地 — 废弃驾校<span class="location-title-en">Wasteland — Abandoned Driving School</span></div>
+<div class="location-meta"><span class="badge">23km / 35分钟 / 35 min</span></div>
+</div>
+<div class="location-body">
+<div class="location-info">
+<div class="info-item"><label>距离 / Distance</label><span>23 公里 / km</span></div>
+<div class="info-item"><label>车程 / Drive Time</label><span>35 分钟 / min</span></div>
+</div>
+<div class="notes"><strong>特点 / Features：</strong>废弃的驾校，但是有看到学员在练车。这里还有一个废弃的隧道。</div>
+<div class="notes"><strong>Notes：</strong>Abandoned driving school, yet some learners can still be seen practicing driving. There is also an abandoned tunnel here.</div>
+<div class="images">
+<img src="lijiang_imgs/road_荒地_6.jpeg" alt="废弃驾校-1">
+<img src="lijiang_imgs/road_荒地_7.jpeg" alt="废弃驾校-2">
+<img src="lijiang_imgs/road_荒地_8.jpeg" alt="废弃驾校-3">
+<img src="lijiang_imgs/road_荒地_9.jpeg" alt="废弃驾校-4">
+<img src="lijiang_imgs/road_荒地_10.jpeg" alt="废弃驾校-5">
+<img src="lijiang_imgs/road_荒地_11.jpeg" alt="废弃驾校-6">
+<img src="lijiang_imgs/road_荒地_12.jpeg" alt="废弃驾校-7">
+<img src="lijiang_imgs/road_荒地_13.jpeg" alt="废弃驾校-8">
+<img src="lijiang_imgs/road_荒地_14.jpeg" alt="废弃驾校-9">
+<img src="lijiang_imgs/road_荒地_15.jpeg" alt="废弃驾校-10">
+</div>
+</div>
+</div>
+
+<div id="road-10" class="location">
+<div class="location-header">
+<div class="location-title">🚇 ⑩ 隧道 — 魔岩山隧道<span class="location-title-en">Tunnel — Moyanshan Tunnel</span></div>
+<div class="location-meta"><span class="badge">丽江南 / S. Lijiang</span><span class="badge">18km / 25分钟 / 25 min</span></div>
+</div>
+<div class="location-body">
+<div class="location-info">
+<div class="info-item"><label>距离 / Distance</label><span>18 公里 / km</span></div>
+<div class="info-item"><label>车程 / Drive Time</label><span>25 分钟 / min</span></div>
+<div class="info-item"><label>位置 / Location</label><span>丽江南 South of Lijiang</span></div>
+</div>
+<div class="notes"><strong>参数 / Specs：</strong>单向双车道，全长1.5公里。</div>
+<div class="notes"><strong>Notes：</strong>One-way dual carriageway, 1.5 kilometers long.</div>
+<div class="images">
+<img src="lijiang_imgs/road_隧道_1.png" alt="魔岩山隧道-1">
+<img src="lijiang_imgs/road_隧道_2.jpeg" alt="魔岩山隧道-2">
+</div>
+</div>
+</div>
+
+<div id="road-11" class="location">
+<div class="location-header">
+<div class="location-title">🚇 ⑪ 隧道 — 石金山隧道<span class="location-title-en">Tunnel — Shijinshan Tunnel</span></div>
+<div class="location-meta"><span class="badge">丽江西 / W. Lijiang</span><span class="badge">25km / 40分钟 / 40 min</span></div>
+</div>
+<div class="location-body">
+<div class="location-info">
+<div class="info-item"><label>距离 / Distance</label><span>25 公里 / km</span></div>
+<div class="info-item"><label>车程 / Drive Time</label><span>40 分钟 / min</span></div>
+<div class="info-item"><label>位置 / Location</label><span>丽江西 West of Lijiang</span></div>
+</div>
+<div class="images">
+<img src="lijiang_imgs/road_隧道_3.png" alt="石金山隧道-1">
+<img src="lijiang_imgs/road_隧道_4.png" alt="石金山隧道-2">
+<img src="lijiang_imgs/road_隧道_5.jpeg" alt="石金山隧道-3">
+</div>
+</div>
+</div>
+
+<div id="road-12" class="location">
+<div class="location-header">
+<div class="location-title">🚇 ⑫ 隧道 — 黄山隧道<span class="location-title-en">Tunnel — Huangshan Tunnel</span></div>
+<div class="location-meta"><span class="badge">丽江西 / W. Lijiang</span><span class="badge">10km / 20分钟 / 20 min</span></div>
+</div>
+<div class="location-body">
+<div class="location-info">
+<div class="info-item"><label>距离 / Distance</label><span>10 公里 / km</span></div>
+<div class="info-item"><label>车程 / Drive Time</label><span>20 分钟 / min</span></div>
+<div class="info-item"><label>位置 / Location</label><span>丽江西 West of Lijiang</span></div>
+</div>
+<div class="images">
+<img src="lijiang_imgs/road_隧道_6.jpeg" alt="黄山隧道-1">
+</div>
+</div>
+</div>
+
+<div id="road-13" class="location">
+<div class="location-header">
+<div class="location-title">🚇 ⑬ 桥洞道路 — 白沙镇<span class="location-title-en">Bridge Underpass Road — Baisha Town</span></div>
+<div class="location-meta"><span class="badge">丽江北 / N. Lijiang</span><span class="badge">8km / 15分钟 / 15 min</span></div>
+</div>
+<div class="location-body">
+<div class="location-info">
+<div class="info-item"><label>距离 / Distance</label><span>8 公里 / km</span></div>
+<div class="info-item"><label>车程 / Drive Time</label><span>15 分钟 / min</span></div>
+<div class="info-item"><label>位置 / Location</label><span>丽江北 North Lijiang</span></div>
+</div>
+<div class="images">
+<img src="lijiang_imgs/road_隧道_8.jpeg" alt="白沙镇桥洞-1">
+</div>
+</div>
+</div>
+
+<div id="road-14" class="location">
+<div class="location-header">
+<div class="location-title">🛣️ ⑭ 高速公路 — 大丽高速（九河方向）<span class="location-title-en">Expressway — Dali-Lijiang (Jiuhe Direction)</span></div>
+<div class="location-meta"><span class="badge">丽江西 / W. Lijiang</span><span class="badge">10km / 20分钟 / 20 min</span></div>
+</div>
+<div class="location-body">
+<div class="location-info">
+<div class="info-item"><label>距离 / Distance</label><span>10 公里 / km</span></div>
+<div class="info-item"><label>车程 / Drive Time</label><span>20 分钟 / min</span></div>
+<div class="info-item"><label>位置 / Location</label><span>丽江西 West of Lijiang</span></div>
+</div>
+<div class="images">
+<img src="lijiang_imgs/road_高速_1.jpeg" alt="大丽高速-1">
+<img src="lijiang_imgs/road_高速_2.jpeg" alt="大丽高速-2">
+<img src="lijiang_imgs/road_高速_3.jpeg" alt="大丽高速-3">
+<img src="lijiang_imgs/road_高速_4.jpeg" alt="大丽高速-4">
+</div>
+</div>
+</div>
+
+<div id="road-15" class="location">
+<div class="location-header">
+<div class="location-title">🛣️ ⑮ 高速公路 — 九河方向<span class="location-title-en">Expressway — Jiuhe Direction</span></div>
+<div class="location-meta"><span class="badge">丽江西 / W. Lijiang</span></div>
+</div>
+<div class="location-body">
+<div class="location-info">
+<div class="info-item"><label>位置 / Location</label><span>丽江西 West of Lijiang</span></div>
+</div>
+<div class="images">
+<img src="lijiang_imgs/road_高速_5.jpeg" alt="九河方向-1">
+<img src="lijiang_imgs/road_高速_6.jpeg" alt="九河方向-2">
+<img src="lijiang_imgs/road_高速_7.jpeg" alt="九河方向-3">
+</div>
+</div>
+</div>
+
+<div id="road-16" class="location">
+<div class="location-header">
+<div class="location-title">🛣️ ⑯ 高速公路 — 靠近丽江城<span class="location-title-en">Expressway — Near Lijiang City</span></div>
+<div class="location-meta"><span class="badge">丽江城郊 / Suburbs</span><span class="badge">5km / 10分钟 / 10 min</span></div>
+</div>
+<div class="location-body">
+<div class="location-info">
+<div class="info-item"><label>距离 / Distance</label><span>5 公里 / km</span></div>
+<div class="info-item"><label>车程 / Drive Time</label><span>10 分钟 / min</span></div>
+</div>
+<div class="notes"><strong>位置 / Proximity：</strong>丽江古城、束河古镇、玉龙雪山 27km / Lijiang Old Town, Shuhe Ancient Town, Yulong Snow Mountain — 27km</div>
+<div class="images">
+<img src="lijiang_imgs/road_高速_8.png" alt="丽江城附近-1">
+<img src="lijiang_imgs/road_高速_9.jpeg" alt="丽江城附近-2">
+<img src="lijiang_imgs/road_高速_10.jpeg" alt="丽江城附近-3">
+<img src="lijiang_imgs/road_高速_11.jpeg" alt="丽江城附近-4">
+</div>
+</div>
+</div>
+
+<div id="road-summary" class="location">
+<div class="location-header">
+<div class="location-title">📋 道路类场地总结<span class="location-title-en">Road-Type Locations Summary</span></div>
+<div class="location-meta"><span class="badge star">Batch #3 Roads</span></div>
+</div>
+<div class="location-body">
+<div class="notes"><strong>通用注意事项 / General Notes：</strong>目前在丽江看到的高速公路隧道都是单向隧道。</div>
+<div class="notes"><strong>Notes：</strong>All expressway tunnels I have seen in Lijiang so far are one-way tunnels.</div>
+<div class="notes"><strong>拍摄建议 / Filming Tips：</strong>高美古路提供独特的风景变化优势，可以尝试在卡车驾驶室平台上进行对话场景。</div>
+<div class="notes"><strong>Notes：</strong>Gaomeigulu Road offers the unique advantage of changing scenery. Consider shooting dialogue scenes from a truck cab platform.</div>
+</div>
+</div>
+
+<a href="#" class="back-top">↑</a>
+</div>
+</body>
+</html>
