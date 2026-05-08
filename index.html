@@ -340,11 +340,43 @@
     position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%;
   }
   .upload-drop p { margin: 0; color: var(--ink-faint); font-size: 13px; }
-  .upload-preview {
-    width: 100%; max-height: 200px; object-fit: contain;
-    border-radius: 6px; display: none; margin-bottom: 8px;
+  /* batch preview grid */
+  .upload-file-grid {
+    display: grid; grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+    gap: 8px; margin-top: 4px;
   }
-  .upload-preview.visible { display: block; }
+  .upload-file-item {
+    position: relative; border: 1px solid var(--line); border-radius: 6px;
+    overflow: hidden; background: #fafaf8;
+  }
+  .upload-file-thumb {
+    display: block; width: 100%; aspect-ratio: 4/3; object-fit: cover;
+  }
+  .upload-file-name {
+    width: 100%; padding: 4px 6px; border: none; border-top: 1px solid var(--line);
+    font-size: 11px; font-family: inherit; color: var(--ink); background: white;
+    outline: none; box-sizing: border-box;
+  }
+  .upload-file-name:focus { border-color: var(--accent); }
+  .upload-file-remove {
+    position: absolute; top: 3px; right: 3px; width: 18px; height: 18px;
+    border-radius: 50%; background: rgba(0,0,0,0.55); color: white;
+    border: none; cursor: pointer; font-size: 11px; line-height: 18px;
+    text-align: center; padding: 0; display: flex; align-items: center; justify-content: center;
+  }
+  .upload-count-badge {
+    display: inline-block; background: var(--accent); color: white;
+    border-radius: 999px; font-size: 12px; font-weight: 600;
+    padding: 2px 10px; margin-top: 6px;
+  }
+  .upload-progress-bar {
+    height: 3px; background: var(--accent-soft); border-radius: 2px; margin-top: 6px; overflow: hidden;
+  }
+  .upload-progress-fill {
+    height: 100%; background: var(--accent); border-radius: 2px;
+    transition: width 0.2s; width: 0%;
+  }
+  .upload-progress-label { font-size: 12px; color: var(--ink-faint); margin-top: 4px; }
   .upload-form { display: flex; flex-direction: column; gap: 12px; }
   .upload-form label { display: flex; flex-direction: column; gap: 4px; font-size: 13px; font-weight: 500; color: var(--ink-soft); }
   .upload-form select, .upload-form input[type="text"], .upload-form textarea {
@@ -499,9 +531,16 @@
     </div>
     <div class="upload-body">
       <div class="upload-drop" id="upload-drop">
-        <input type="file" id="upload-file" accept="image/*">
-        <img class="upload-preview" id="upload-preview" alt="">
-        <p id="upload-drop-hint">点击选择或拖拽图片到这里 · Click or drag image here</p>
+        <input type="file" id="upload-file" accept="image/*" multiple>
+        <p id="upload-drop-hint">点击选择或拖拽图片（支持多选）· Click or drag, multi-select OK</p>
+        <div id="upload-file-grid" class="upload-file-grid"></div>
+        <div id="upload-count-wrap" style="display:none;">
+          <span class="upload-count-badge" id="upload-count-badge"></span>
+        </div>
+        <div class="upload-progress-bar" id="upload-progress-bar" style="display:none;">
+          <div class="upload-progress-fill" id="upload-progress-fill"></div>
+        </div>
+        <div class="upload-progress-label" id="upload-progress-label"></div>
       </div>
       <div class="upload-form">
         <label>大类 Group
@@ -516,17 +555,14 @@
           <select id="up-loc" disabled><option value="">请先选择场景…</option></select>
           <input type="text" id="up-loc-custom" class="custom-input" placeholder="输入自定义地点名…" style="display:none;">
         </label>
-        <label>图片名称 Photo Name
-          <input type="text" id="up-name" placeholder="给这张图片起个名字…">
-        </label>
-        <label>备注 Notes
-          <textarea id="up-notes" placeholder="可选备注…"></textarea>
+        <label>批量备注 Notes（所有图片共享）
+          <textarea id="up-notes" placeholder="可选备注，对本次所有上传图片生效…"></textarea>
         </label>
       </div>
     </div>
     <div class="upload-footer">
       <button class="btn-secondary" id="upload-cancel">取消</button>
-      <button class="btn-primary" id="upload-submit">保存上传</button>
+      <button class="btn-primary" id="upload-submit" disabled>请先选择图片</button>
     </div>
   </div>
 </div>
@@ -1107,16 +1143,21 @@ window.addEventListener('scroll', () => {
 
 // ── Upload Modal ──
 const uploadOverlay = document.getElementById('upload-overlay');
+let selectedFiles = []; // {file: File, name: string, blobUrl: string}
 
 function openUploadModal() {
+  selectedFiles = [];
   uploadOverlay.classList.add('active');
   document.body.style.overflow = 'hidden';
   populateGroupSelect();
   document.getElementById('upload-file').value = '';
-  document.getElementById('upload-preview').classList.remove('visible');
+  document.getElementById('upload-file-grid').innerHTML = '';
   document.getElementById('upload-drop-hint').style.display = '';
-  document.getElementById('up-name').value = '';
+  document.getElementById('upload-count-wrap').style.display = 'none';
+  document.getElementById('upload-progress-bar').style.display = 'none';
+  document.getElementById('upload-progress-label').textContent = '';
   document.getElementById('up-notes').value = '';
+  updateSubmitBtn();
 }
 
 function closeUploadModal() {
@@ -1124,27 +1165,79 @@ function closeUploadModal() {
   document.body.style.overflow = '';
 }
 
-document.getElementById('upload-btn').addEventListener('click', openUploadModal);
-document.getElementById('upload-close').addEventListener('click', closeUploadModal);
-document.getElementById('upload-cancel').addEventListener('click', closeUploadModal);
-uploadOverlay.addEventListener('click', e => { if (e.target === uploadOverlay) closeUploadModal(); });
-
-// File preview
-function handleFileSelected(file) {
-  if (!file) return;
-  const preview = document.getElementById('upload-preview');
-  const hint = document.getElementById('upload-drop-hint');
-  const url = URL.createObjectURL(file);
-  preview.src = url;
-  preview.classList.add('visible');
-  hint.style.display = 'none';
-  if (!document.getElementById('up-name').value) {
-    document.getElementById('up-name').value = file.name.replace(/\.[^.]+$/, '');
+function updateSubmitBtn() {
+  const btn = document.getElementById('upload-submit');
+  if (selectedFiles.length === 0) {
+    btn.textContent = '请先选择图片';
+    btn.disabled = true;
+  } else {
+    btn.textContent = `上传 ${selectedFiles.length} 张图片`;
+    btn.disabled = false;
   }
 }
 
+function renderFileGrid() {
+  const grid = document.getElementById('upload-file-grid');
+  const hint = document.getElementById('upload-drop-hint');
+  const countWrap = document.getElementById('upload-count-wrap');
+  const countBadge = document.getElementById('upload-count-badge');
+
+  if (selectedFiles.length === 0) {
+    grid.innerHTML = '';
+    hint.style.display = '';
+    countWrap.style.display = 'none';
+    updateSubmitBtn();
+    return;
+  }
+
+  hint.style.display = 'none';
+  countWrap.style.display = '';
+  countBadge.textContent = `已选 ${selectedFiles.length} 张`;
+
+  grid.innerHTML = selectedFiles.map((item, i) => `
+    <div class="upload-file-item">
+      <img class="upload-file-thumb" src="${item.blobUrl}" alt="">
+      <button class="upload-file-remove" data-idx="${i}" title="移除">✕</button>
+      <input class="upload-file-name" type="text" value="${escapeHtml(item.name)}" data-idx="${i}" placeholder="图片名称">
+    </div>
+  `).join('');
+
+  grid.querySelectorAll('.upload-file-remove').forEach(btn => {
+    btn.addEventListener('click', e => {
+      e.stopPropagation();
+      const idx = parseInt(btn.dataset.idx);
+      URL.revokeObjectURL(selectedFiles[idx].blobUrl);
+      selectedFiles.splice(idx, 1);
+      renderFileGrid();
+      updateSubmitBtn();
+    });
+  });
+
+  grid.querySelectorAll('.upload-file-name').forEach(input => {
+    input.addEventListener('input', e => {
+      selectedFiles[parseInt(input.dataset.idx)].name = e.target.value;
+    });
+    // Prevent click on input from triggering the file picker (input is inside drop zone)
+    input.addEventListener('click', e => e.stopPropagation());
+  });
+
+  updateSubmitBtn();
+}
+
+function addFiles(fileList) {
+  const images = Array.from(fileList).filter(f => f.type.startsWith('image/'));
+  for (const file of images) {
+    const name = file.name.replace(/\.[^.]+$/, '');
+    const blobUrl = URL.createObjectURL(file);
+    selectedFiles.push({ file, name, blobUrl });
+  }
+  renderFileGrid();
+}
+
 document.getElementById('upload-file').addEventListener('change', e => {
-  handleFileSelected(e.target.files[0]);
+  addFiles(e.target.files);
+  // Reset so same files can be re-selected if needed
+  e.target.value = '';
 });
 
 const uploadDrop = document.getElementById('upload-drop');
@@ -1153,8 +1246,7 @@ uploadDrop.addEventListener('dragleave', () => uploadDrop.classList.remove('drag
 uploadDrop.addEventListener('drop', e => {
   e.preventDefault();
   uploadDrop.classList.remove('dragover');
-  const file = e.dataTransfer.files[0];
-  if (file && file.type.startsWith('image/')) handleFileSelected(file);
+  addFiles(e.dataTransfer.files);
 });
 
 // Cascade selects
@@ -1226,11 +1318,9 @@ document.getElementById('up-loc').addEventListener('change', function() {
   customInput.style.display = this.value === '__custom__' ? '' : 'none';
 });
 
-// Save upload
+// Save upload (batch)
 document.getElementById('upload-submit').addEventListener('click', async () => {
-  const fileInput = document.getElementById('upload-file');
-  const file = fileInput.files[0];
-  if (!file) { alert('请先选择一张图片 · Please select an image first.'); return; }
+  if (selectedFiles.length === 0) return;
 
   const groupVal = document.getElementById('up-group').value;
   const groupCustom = document.getElementById('up-group-custom').value.trim();
@@ -1238,91 +1328,125 @@ document.getElementById('upload-submit').addEventListener('click', async () => {
   const catCustom = document.getElementById('up-cat-custom').value.trim();
   const locVal = document.getElementById('up-loc').value;
   const locCustom = document.getElementById('up-loc-custom').value.trim();
+  const notes = document.getElementById('up-notes').value.trim();
 
   const groupLabel = groupVal === '__custom__' ? groupCustom : (DATA.groups[groupVal]?.title_zh || groupCustom || '');
   const catLabel = catVal === '__custom__' ? catCustom : (DATA.categories[catVal]?.name_zh || catCustom || '');
   const locLabel = locVal === '__custom__' ? locCustom : (locVal || locCustom || '');
 
-  const name = document.getElementById('up-name').value.trim() || file.name;
-  const notes = document.getElementById('up-notes').value.trim();
+  // Show progress UI
+  const progressBar = document.getElementById('upload-progress-bar');
+  const progressFill = document.getElementById('upload-progress-fill');
+  const progressLabel = document.getElementById('upload-progress-label');
+  const submitBtn = document.getElementById('upload-submit');
+  progressBar.style.display = '';
+  submitBtn.disabled = true;
 
-  const id = genUUID();
-  const ext = file.name.split('.').pop().toLowerCase();
-  const filename = `${id}.${ext}`;
-  const relPath = `data/uploaded_images/${filename}`;
-
-  const metadata = {
-    id,
-    path: relPath,
-    levels: [groupLabel, catLabel, locLabel],
-    name,
-    notes,
-    status: '未筛选',
-    comments: [],
-    created_at: new Date().toISOString()
-  };
-
-  // Store in IndexedDB (always)
-  const blob = new Blob([await file.arrayBuffer()], { type: file.type });
-  await idbSave(id, blob);
-  const blobUrl = URL.createObjectURL(blob);
-  metadata._blobUrl = blobUrl;
-
-  // Try File System Access API
+  const total = selectedFiles.length;
+  const allMetadata = [];
   let savedToDisk = false;
-  try {
-    if ('showDirectoryPicker' in window) {
+
+  // Get FSA directory handle once (prompt only once for the whole batch)
+  let dirHandle = null;
+  let dataDir = null;
+  let imagesDir = null;
+  if ('showDirectoryPicker' in window) {
+    try {
       if (!window._fsaDirHandle) {
         window._fsaDirHandle = await window.showDirectoryPicker({ mode: 'readwrite', startIn: 'desktop' });
       }
-      const dirHandle = window._fsaDirHandle;
-
-      // Write image
-      const dataDir = await dirHandle.getDirectoryHandle('data', { create: true });
-      const imagesDir = await dataDir.getDirectoryHandle('uploaded_images', { create: true });
-      const imgFileHandle = await imagesDir.getFileHandle(filename, { create: true });
-      const writable = await imgFileHandle.createWritable();
-      await writable.write(blob);
-      await writable.close();
-
-      // Update metadata.json
-      let existingMeta = [];
-      try {
-        const metaHandle = await dataDir.getFileHandle('metadata.json');
-        const metaFile = await metaHandle.getFile();
-        existingMeta = JSON.parse(await metaFile.text());
-      } catch { existingMeta = []; }
-      const cleanMeta = { ...metadata };
-      delete cleanMeta._blobUrl;
-      existingMeta.push(cleanMeta);
-      const metaHandle2 = await dataDir.getFileHandle('metadata.json', { create: true });
-      const metaWritable = await metaHandle2.createWritable();
-      await metaWritable.write(JSON.stringify(existingMeta, null, 2));
-      await metaWritable.close();
-
+      dirHandle = window._fsaDirHandle;
+      dataDir = await dirHandle.getDirectoryHandle('data', { create: true });
+      imagesDir = await dataDir.getDirectoryHandle('uploaded_images', { create: true });
       savedToDisk = true;
+    } catch (err) {
+      if (err.name === 'AbortError') {
+        // User cancelled directory picker — continue with IndexedDB only
+        submitBtn.disabled = false;
+      } else {
+        console.warn('FSA init failed:', err);
+      }
     }
-  } catch (err) {
-    if (err.name !== 'AbortError') console.warn('File System Access failed:', err);
   }
 
-  // Add to in-memory list and re-render
-  UPLOADED_IMAGES.push(metadata);
+  // Read existing metadata.json once
+  let existingMeta = [];
+  if (savedToDisk && dataDir) {
+    try {
+      const mh = await dataDir.getFileHandle('metadata.json');
+      existingMeta = JSON.parse(await (await mh.getFile()).text());
+    } catch { existingMeta = []; }
+  }
+
+  // Process each file
+  for (let i = 0; i < total; i++) {
+    const item = selectedFiles[i];
+    progressLabel.textContent = `正在上传 ${i + 1} / ${total}…`;
+    progressFill.style.width = `${((i) / total) * 100}%`;
+
+    const id = genUUID();
+    const ext = item.file.name.split('.').pop().toLowerCase();
+    const filename = `${id}.${ext}`;
+    const relPath = `data/uploaded_images/${filename}`;
+    const name = item.name.trim() || item.file.name;
+
+    const blob = new Blob([await item.file.arrayBuffer()], { type: item.file.type });
+    await idbSave(id, blob);
+
+    const metadata = {
+      id, path: relPath,
+      levels: [groupLabel, catLabel, locLabel],
+      name, notes,
+      status: '未筛选', comments: [],
+      created_at: new Date().toISOString(),
+      _blobUrl: item.blobUrl
+    };
+
+    // Write image file to disk
+    if (savedToDisk && imagesDir) {
+      try {
+        const fh = await imagesDir.getFileHandle(filename, { create: true });
+        const w = await fh.createWritable();
+        await w.write(blob);
+        await w.close();
+      } catch (err) { console.warn('FSA write failed for', filename, err); }
+    }
+
+    allMetadata.push(metadata);
+    UPLOADED_IMAGES.push(metadata);
+  }
+
+  // Write metadata.json once with all new entries
+  if (savedToDisk && dataDir) {
+    try {
+      const cleanEntries = allMetadata.map(m => { const c = {...m}; delete c._blobUrl; return c; });
+      existingMeta.push(...cleanEntries);
+      const mh = await dataDir.getFileHandle('metadata.json', { create: true });
+      const mw = await mh.createWritable();
+      await mw.write(JSON.stringify(existingMeta, null, 2));
+      await mw.close();
+    } catch (err) { console.warn('metadata.json write failed:', err); }
+  }
+
+  progressFill.style.width = '100%';
+  progressLabel.textContent = `✅ 已完成 ${total} 张`;
+
   render(currentFilter);
-  closeUploadModal();
 
-  // Show toast
-  if (savedToDisk) {
-    showToast(
-      `✅ 图片已保存到 <strong>${relPath}</strong>。运行以下命令同步至 GitHub：<code class="toast-code">git add . && git commit -m "Add uploaded photo: ${escapeHtml(name)}" && git push</code>`,
-      10000
-    );
-  } else {
-    showToast(
-      `✅ 图片已存入浏览器（IndexedDB）。刷新页面后仍可见。如需同步到 GitHub，请手动将图片保存至 <strong>${relPath}</strong> 并运行 git push。`,
-      9000
-    );
-  }
+  setTimeout(() => {
+    closeUploadModal();
+    if (savedToDisk) {
+      showToast(
+        `✅ ${total} 张图片已保存至 <strong>data/uploaded_images/</strong>。同步至 GitHub：<code class="toast-code">git add data/uploaded_images/ data/metadata.json && git commit -m "Add ${total} uploaded photos" && git push</code>`,
+        12000
+      );
+    } else {
+      showToast(
+        `✅ ${total} 张图片已存入浏览器（IndexedDB）。如需同步到 GitHub，请手动复制文件并运行 git push。`,
+        9000
+      );
+    }
+  }, 600);
 });
 
 // ── Delete photo ──
