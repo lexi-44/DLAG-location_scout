@@ -240,6 +240,40 @@
     transition: opacity 0.15s; white-space: nowrap;
   }
   .upload-btn:hover { opacity: 0.85; }
+  .github-btn {
+    padding: 7px 13px; border: 1px solid var(--line); border-radius: 999px;
+    background: white; font-size: 13px; font-family: inherit;
+    color: var(--ink-soft); cursor: pointer; user-select: none;
+    display: flex; align-items: center; gap: 5px; transition: all 0.15s; white-space: nowrap;
+  }
+  .github-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .github-btn.connected { border-color: #16a34a; color: #16a34a; }
+  .github-dot { width: 7px; height: 7px; border-radius: 50%; background: currentColor; }
+  /* GitHub config modal */
+  .ghcfg-overlay {
+    position: fixed; inset: 0; background: rgba(15,13,10,0.65);
+    display: none; align-items: center; justify-content: center;
+    z-index: 1300; padding: 24px;
+  }
+  .ghcfg-overlay.active { display: flex; }
+  .ghcfg-dialog {
+    background: white; border-radius: 12px; max-width: 420px; width: 100%;
+    padding: 28px 26px 22px; box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+    display: flex; flex-direction: column; gap: 14px;
+  }
+  .ghcfg-dialog h3 { margin: 0; font-size: 16px; font-weight: 600; }
+  .ghcfg-dialog label { display: flex; flex-direction: column; gap: 5px; font-size: 13px; font-weight: 500; color: var(--ink-soft); }
+  .ghcfg-dialog input {
+    padding: 8px 12px; border: 1px solid var(--line); border-radius: 6px;
+    font-size: 14px; font-family: inherit; color: var(--ink); outline: none;
+  }
+  .ghcfg-dialog input:focus { border-color: var(--accent); }
+  .ghcfg-note { font-size: 12px; color: var(--ink-faint); line-height: 1.5; background: #f3efe7; padding: 8px 12px; border-radius: 6px; }
+  .ghcfg-note a { color: var(--accent); }
+  .ghcfg-actions { display: flex; gap: 10px; justify-content: flex-end; margin-top: 4px; }
+  .ghcfg-status { font-size: 12px; padding: 5px 10px; border-radius: 5px; }
+  .ghcfg-status.ok { background: #dcfce7; color: #16a34a; }
+  .ghcfg-status.err { background: #fee2e2; color: #dc2626; }
 
   /* ── Status filter row ── */
   .status-filters {
@@ -478,6 +512,7 @@
       </div>
       <div class="group-filters" id="group-filters"></div>
       <button class="upload-btn" id="upload-btn">＋ 上传图片</button>
+      <button class="github-btn" id="github-btn"><span class="github-dot"></span><span id="github-btn-label">GitHub 同步</span></button>
     </div>
     <div class="status-filters" id="status-filters">
       <span class="filter-label">视图：</span>
@@ -568,6 +603,32 @@
 </div>
 
 <div class="toast" id="toast"></div>
+
+<div class="ghcfg-overlay" id="ghcfg-overlay">
+  <div class="ghcfg-dialog">
+    <h3>⚙ GitHub 同步设置</h3>
+    <div class="ghcfg-note">
+      需要一个有 <strong>repo</strong> 权限的 Personal Access Token（PAT）。
+      在 GitHub → Settings → Developer settings → Personal access tokens 创建。
+      Token 仅存在本地浏览器（localStorage），请勿在公共设备上使用。
+    </div>
+    <label>Personal Access Token
+      <input type="password" id="ghcfg-token" placeholder="ghp_xxxxxxxxxxxx" autocomplete="off">
+    </label>
+    <label>仓库 Repository（owner/repo）
+      <input type="text" id="ghcfg-repo" placeholder="lexi-44/DLAG-location_scout">
+    </label>
+    <label>分支 Branch
+      <input type="text" id="ghcfg-branch" placeholder="main">
+    </label>
+    <div id="ghcfg-status" class="ghcfg-status" style="display:none;"></div>
+    <div class="ghcfg-actions">
+      <button class="btn-secondary" id="ghcfg-cancel">关闭</button>
+      <button class="btn-secondary" id="ghcfg-test">测试连接</button>
+      <button class="btn-primary" id="ghcfg-save">保存</button>
+    </div>
+  </div>
+</div>
 
 <div class="confirm-overlay" id="confirm-overlay">
   <div class="confirm-dialog">
@@ -846,7 +907,7 @@ function render(filter) {
             thumb: item._blobUrl || item.path,
             catName: cat.name_zh,
             catEn: cat.name_en,
-            locName: (item.levels || [])[2] || '已上传',
+            locName: (item.levels || [])[2] || '',
             locEn: '',
             instLabel: '',
             instDesc: item.notes || ''
@@ -855,11 +916,17 @@ function render(filter) {
           catVisible += 1;
           return makeTileHtml(imgObj, fi);
         }).join('');
-        locSections.push(`
-          <div class="instance no-label" style="margin-top:14px;">
-            <div class="grid">${uploadTiles}</div>
-          </div>
-        `);
+
+        if (locSections.length > 0) {
+          // Inject tiles into the last grid of the last location section
+          const last = locSections[locSections.length - 1];
+          const gridOpen = last.lastIndexOf('<div class="grid">');
+          const gridClose = last.indexOf('</div>', gridOpen + 16);
+          locSections[locSections.length - 1] =
+            last.slice(0, gridClose) + uploadTiles + last.slice(gridClose);
+        } else {
+          locSections.push(`<div class="instance no-label"><div class="grid">${uploadTiles}</div></div>`);
+        }
       }
 
       if (locSections.length === 0) continue;
@@ -1430,82 +1497,228 @@ document.getElementById('upload-submit').addEventListener('click', async () => {
 
   progressFill.style.width = '100%';
   progressLabel.textContent = `✅ 已完成 ${total} 张`;
-
   render(currentFilter);
 
-  setTimeout(() => {
-    closeUploadModal();
-    if (savedToDisk) {
-      showToast(
-        `✅ ${total} 张图片已保存至 <strong>data/uploaded_images/</strong>。同步至 GitHub：<code class="toast-code">git add data/uploaded_images/ data/metadata.json && git commit -m "Add ${total} uploaded photos" && git push</code>`,
-        12000
-      );
-    } else {
-      showToast(
-        `✅ ${total} 张图片已存入浏览器（IndexedDB）。如需同步到 GitHub，请手动复制文件并运行 git push。`,
-        9000
-      );
+  // GitHub sync
+  if (isGithubConfigured()) {
+    progressLabel.textContent = `⟳ 正在同步至 GitHub…`;
+    let ghOk = false;
+    try {
+      const uploadPromises = allMetadata.map(async (meta, i) => {
+        const item = selectedFiles[i];
+        if (!item) return false;
+        const b64 = await blobToBase64(new Blob([await item.file.arrayBuffer()], { type: item.file.type }));
+        return ghPut(meta.path, b64, `Upload photo: ${meta.name}`);
+      });
+      const results = await Promise.all(uploadPromises);
+      const metaOk = await ghSyncMetadata();
+      ghOk = results.every(Boolean) && metaOk;
+    } catch (err) { console.warn('GitHub sync error:', err); }
+    setTimeout(() => {
+      closeUploadModal();
+      showToast(ghOk
+        ? `✅ ${total} 张图片已同步至 GitHub`
+        : `⚠ 图片已上传到图库，但 GitHub 同步失败，请检查 Token 和网络`, 6000);
+    }, 400);
+  } else {
+    setTimeout(() => {
+      closeUploadModal();
+      showToast(`✅ ${total} 张图片已存入浏览器。点击 "GitHub 同步" 按钮配置后可自动同步至 GitHub。`, 7000);
+    }, 600);
+  }
+});
+
+// ── GitHub Sync ──
+const GH_KEY = 'dlag_github_config';
+function getGithubConfig() {
+  try { return JSON.parse(localStorage.getItem(GH_KEY) || '{}'); } catch { return {}; }
+}
+function saveGithubConfig(cfg) { localStorage.setItem(GH_KEY, JSON.stringify(cfg)); }
+function isGithubConfigured() {
+  const c = getGithubConfig();
+  return !!(c.token && c.repo);
+}
+
+function updateGithubBtn() {
+  const btn = document.getElementById('github-btn');
+  const lbl = document.getElementById('github-btn-label');
+  if (isGithubConfigured()) {
+    btn.classList.add('connected');
+    lbl.textContent = '已连接 GitHub';
+  } else {
+    btn.classList.remove('connected');
+    lbl.textContent = 'GitHub 同步';
+  }
+}
+
+function textToBase64(str) {
+  const bytes = new TextEncoder().encode(str);
+  let bin = '';
+  bytes.forEach(b => bin += String.fromCharCode(b));
+  return btoa(bin);
+}
+async function blobToBase64(blob) {
+  return new Promise(resolve => {
+    const reader = new FileReader();
+    reader.onload = () => resolve(reader.result.split(',')[1]);
+    reader.readAsDataURL(blob);
+  });
+}
+
+async function ghFetch(path, options = {}) {
+  const cfg = getGithubConfig();
+  const [owner, repo] = (cfg.repo || '/').split('/');
+  const url = `https://api.github.com/repos/${owner}/${repo}/contents/${path}`;
+  return fetch(url, {
+    ...options,
+    headers: {
+      Authorization: `token ${cfg.token}`,
+      Accept: 'application/vnd.github.v3+json',
+      'Content-Type': 'application/json',
+      ...(options.headers || {})
     }
-  }, 600);
+  });
+}
+
+async function ghGetSHA(path) {
+  const cfg = getGithubConfig();
+  const branch = cfg.branch || 'main';
+  const resp = await ghFetch(`${path}?ref=${branch}`);
+  if (!resp.ok) return null;
+  const data = await resp.json();
+  return data.sha || null;
+}
+
+async function ghPut(path, base64Content, message) {
+  const cfg = getGithubConfig();
+  const sha = await ghGetSHA(path);
+  const body = { message, content: base64Content, branch: cfg.branch || 'main' };
+  if (sha) body.sha = sha;
+  const resp = await ghFetch(path, { method: 'PUT', body: JSON.stringify(body) });
+  return resp.ok;
+}
+
+async function ghDelete(path, message) {
+  const cfg = getGithubConfig();
+  const sha = await ghGetSHA(path);
+  if (!sha) return true;
+  const resp = await ghFetch(path, {
+    method: 'DELETE',
+    body: JSON.stringify({ message, sha, branch: cfg.branch || 'main' })
+  });
+  return resp.ok;
+}
+
+async function ghSyncMetadata() {
+  const cfg = getGithubConfig();
+  // Read current metadata.json from GitHub to preserve non-uploaded entries
+  let nonUploaded = [];
+  try {
+    const branch = cfg.branch || 'main';
+    const resp = await ghFetch(`data/metadata.json?ref=${branch}`);
+    if (resp.ok) {
+      const data = await resp.json();
+      const all = JSON.parse(atob(data.content.replace(/\n/g, '')));
+      nonUploaded = all.filter(e => !e.path?.includes('uploaded_images'));
+    }
+  } catch {}
+  const currentUploaded = UPLOADED_IMAGES
+    .filter(item => !isDeleted(item.path || item.id))
+    .map(item => { const c = { ...item }; delete c._blobUrl; return c; });
+  const newJson = JSON.stringify([...nonUploaded, ...currentUploaded], null, 2);
+  return ghPut('data/metadata.json', textToBase64(newJson), 'Update metadata.json [gallery sync]');
+}
+
+// GitHub config modal
+const ghcfgOverlay = document.getElementById('ghcfg-overlay');
+function openGhcfg() {
+  const cfg = getGithubConfig();
+  document.getElementById('ghcfg-token').value = cfg.token || '';
+  document.getElementById('ghcfg-repo').value = cfg.repo || 'lexi-44/DLAG-location_scout';
+  document.getElementById('ghcfg-branch').value = cfg.branch || 'main';
+  document.getElementById('ghcfg-status').style.display = 'none';
+  ghcfgOverlay.classList.add('active');
+}
+function closeGhcfg() { ghcfgOverlay.classList.remove('active'); }
+
+document.getElementById('github-btn').addEventListener('click', openGhcfg);
+document.getElementById('ghcfg-cancel').addEventListener('click', closeGhcfg);
+ghcfgOverlay.addEventListener('click', e => { if (e.target === ghcfgOverlay) closeGhcfg(); });
+
+document.getElementById('ghcfg-save').addEventListener('click', () => {
+  const cfg = {
+    token: document.getElementById('ghcfg-token').value.trim(),
+    repo: document.getElementById('ghcfg-repo').value.trim(),
+    branch: document.getElementById('ghcfg-branch').value.trim() || 'main'
+  };
+  saveGithubConfig(cfg);
+  updateGithubBtn();
+  closeGhcfg();
+  showToast(isGithubConfigured() ? '✅ GitHub 同步已配置' : '⚠ 配置已清除', 3000);
+});
+
+document.getElementById('ghcfg-test').addEventListener('click', async () => {
+  const statusEl = document.getElementById('ghcfg-status');
+  const token = document.getElementById('ghcfg-token').value.trim();
+  const repo = document.getElementById('ghcfg-repo').value.trim();
+  if (!token || !repo) { statusEl.textContent = '请先填写 Token 和仓库'; statusEl.className = 'ghcfg-status err'; statusEl.style.display = ''; return; }
+  statusEl.textContent = '连接测试中…'; statusEl.className = 'ghcfg-status'; statusEl.style.display = '';
+  try {
+    const [owner, repoName] = repo.split('/');
+    const resp = await fetch(`https://api.github.com/repos/${owner}/${repoName}`, {
+      headers: { Authorization: `token ${token}`, Accept: 'application/vnd.github.v3+json' }
+    });
+    if (resp.ok) {
+      statusEl.textContent = '✅ 连接成功！'; statusEl.className = 'ghcfg-status ok';
+    } else {
+      statusEl.textContent = `❌ 失败 (${resp.status}) — 检查 Token 和仓库名`; statusEl.className = 'ghcfg-status err';
+    }
+  } catch {
+    statusEl.textContent = '❌ 网络错误'; statusEl.className = 'ghcfg-status err';
+  }
+  statusEl.style.display = '';
 });
 
 // ── Delete photo ──
 async function deletePhoto(imageId) {
   markDeleted(imageId);
+  closeLightbox();
+  render(currentFilter);
 
   const isUploaded = imageId.includes('uploaded_images');
   const uploadedItem = UPLOADED_IMAGES.find(i => (i.path || i.id) === imageId);
 
   if (isUploaded && uploadedItem) {
-    // Remove from in-memory list
     const idx = UPLOADED_IMAGES.indexOf(uploadedItem);
     if (idx !== -1) UPLOADED_IMAGES.splice(idx, 1);
-
-    // Remove from IndexedDB
     try { await idbDelete(uploadedItem.id); } catch {}
 
-    // Try File System Access API
-    let deletedFromDisk = false;
-    try {
-      if (window._fsaDirHandle) {
-        const dataDir = await window._fsaDirHandle.getDirectoryHandle('data');
-        const imagesDir = await dataDir.getDirectoryHandle('uploaded_images');
-        const filename = imageId.split('/').pop();
-        await imagesDir.removeEntry(filename);
-
-        // Update metadata.json
-        try {
-          const metaHandle = await dataDir.getFileHandle('metadata.json');
-          const metaFile = await metaHandle.getFile();
-          let meta = JSON.parse(await metaFile.text());
-          meta = meta.filter(m => m.id !== uploadedItem.id);
-          const mw = await dataDir.getFileHandle('metadata.json', { create: true });
-          const mww = await mw.createWritable();
-          await mww.write(JSON.stringify(meta, null, 2));
-          await mww.close();
-        } catch {}
-
-        deletedFromDisk = true;
-      }
-    } catch (err) {
-      if (err.name !== 'AbortError') console.warn('FSA delete failed:', err);
-    }
-
-    const filename = imageId.split('/').pop();
-    if (deletedFromDisk) {
-      showToast(`🗑 已删除。运行以下命令同步至 GitHub：<code class="toast-code">git rm data/uploaded_images/${escapeHtml(filename)} && git add data/metadata.json && git commit -m "Delete photo" && git push</code>`, 12000);
+    if (isGithubConfigured()) {
+      showToast('🗑 正在从 GitHub 删除…', 60000);
+      const filename = imageId.split('/').pop();
+      const [imgOk, metaOk] = await Promise.all([
+        ghDelete(imageId, `Delete uploaded photo: ${uploadedItem.name || filename}`),
+        ghSyncMetadata()
+      ]);
+      showToast(imgOk && metaOk ? '✅ 已从 GitHub 删除' : '⚠ 已从图库移除，但 GitHub 同步失败，请检查配置', 5000);
     } else {
-      showToast(`🗑 已从图库中移除。如需从 GitHub 删除，请手动运行：<code class="toast-code">git rm data/uploaded_images/${escapeHtml(filename)} && git add data/metadata.json && git commit -m "Delete photo" && git push</code>`, 12000);
+      const filename = imageId.split('/').pop();
+      showToast(`🗑 已从图库移除。配置 GitHub 同步后可自动同步，或手动运行：<code class="toast-code">git rm data/uploaded_images/${escapeHtml(filename)} && git add data/metadata.json && git commit -m "Delete" && git push</code>`, 10000);
     }
   } else {
-    // Existing DATA image — hidden via localStorage, show git instructions
-    const parts = imageId.split('/'); // e.g. images/small_road/small_road_01.jpeg
+    // Existing DATA image
     const thumbPath = imageId.replace(/^images\//, 'thumbs/').replace(/\.jpeg$/, '.jpg');
-    showToast(`🗑 已从图库中隐藏。如需从 GitHub 彻底删除，请运行：<code class="toast-code">git rm ${escapeHtml(imageId)} ${escapeHtml(thumbPath)} && git commit -m "Delete photo" && git push</code>`, 12000);
+    if (isGithubConfigured()) {
+      showToast('🗑 正在从 GitHub 删除…', 60000);
+      const [imgOk, thumbOk] = await Promise.all([
+        ghDelete(imageId, `Delete photo: ${imageId.split('/').pop()}`),
+        ghDelete(thumbPath, `Delete thumb: ${thumbPath.split('/').pop()}`)
+      ]);
+      showToast(imgOk ? '✅ 已从 GitHub 删除' : '⚠ 图库已隐藏，但 GitHub 删除失败（文件可能不存在）', 5000);
+    } else {
+      showToast(`🗑 已从图库中隐藏。配置 GitHub 同步后可自动删除，或手动运行：<code class="toast-code">git rm ${escapeHtml(imageId)} ${escapeHtml(thumbPath)} && git commit -m "Delete" && git push</code>`, 10000);
+    }
   }
-
-  closeLightbox();
-  render(currentFilter);
 }
 
 // Confirmation dialog
@@ -1540,6 +1753,7 @@ document.getElementById('lb-btn-delete').addEventListener('click', () => {
 loadUploadedImages().then(() => {
   buildHeader();
   render(currentFilter);
+  updateGithubBtn();
 });
 </script>
 </body>
