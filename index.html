@@ -856,8 +856,7 @@ function render(filter) {
           return makeTileHtml(imgObj, fi);
         }).join('');
         locSections.push(`
-          <div class="uploaded-section">
-            <div class="uploaded-section-head">📤 已上传 · Uploaded (${catUploads.length})</div>
+          <div class="instance no-label" style="margin-top:14px;">
             <div class="grid">${uploadTiles}</div>
           </div>
         `);
@@ -935,10 +934,6 @@ function render(filter) {
             <span class="group-count">${customCount} 张</span>
           </div>
           <section class="category">
-            <div class="cat-head">
-              <h3 class="cat-title">已上传图片</h3>
-              <span class="cat-count">${customCount} 张</span>
-            </div>
             <div class="grid" style="margin-top:12px;">${tiles}</div>
           </section>
         </section>
