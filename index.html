@@ -1165,6 +1165,11 @@ function closeUploadModal() {
   document.body.style.overflow = '';
 }
 
+document.getElementById('upload-btn').addEventListener('click', openUploadModal);
+document.getElementById('upload-close').addEventListener('click', closeUploadModal);
+document.getElementById('upload-cancel').addEventListener('click', closeUploadModal);
+uploadOverlay.addEventListener('click', e => { if (e.target === uploadOverlay) closeUploadModal(); });
+
 function updateSubmitBtn() {
   const btn = document.getElementById('upload-submit');
   if (selectedFiles.length === 0) {
